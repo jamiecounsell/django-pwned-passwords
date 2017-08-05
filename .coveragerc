@@ -6,7 +6,7 @@ omit =
     *site-packages*
     *tests*
     *.tox*
-    apps.py
+    */django_pwned_passwords/apps.py
 show_missing = True
 exclude_lines =
     raise NotImplementedError

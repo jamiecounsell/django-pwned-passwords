@@ -2,12 +2,11 @@
 
 language: python
 
-sudo: required
-
-dist: trusty
-
 python:
   - "3.6"
+
+before_install:
+  - if [[ $TOXENV = py35 && -f ~/virtualenv/python3.5/bin/activate ]]; then source ~/virtualenv/python3.5/bin/activate; fi
 
 env:
   - TOX_ENV=py36-django-18
@@ -30,8 +29,10 @@ env:
 matrix:
   fast_finish: true
 
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -r requirements_test.txt
 
+# command to run tests using coverage, e.g. python setup.py test
 script: tox -e $TOX_ENV
 
 after_success:

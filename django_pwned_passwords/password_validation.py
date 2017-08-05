@@ -49,9 +49,16 @@ class PWNEDPasswordValidator(object):
         :param password: The password to test
         :return: True if the password is valid. Else, False.
         """
-        response = requests.get(self.get_url(password), timeout = self.timeout)
+
         VALID = True
         INVALID = False
+
+        try:
+            response = requests.get(self.get_url(password), timeout = self.timeout)
+        except requests.exceptions.RequestException:
+            if not self.fail_safe:
+                raise ValidationError(self.error_fail_msg)
+            return VALID
 
         if response.status_code == 200:
             return INVALID

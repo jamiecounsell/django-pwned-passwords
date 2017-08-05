@@ -7,7 +7,7 @@ Install via pip::
     $ pip install django-pwned-passwords
 
 
-Add it to your `INSTALLED_APPS`:
+Add it to your :code:`INSTALLED_APPS`:
 
 .. code-block:: python
 
@@ -18,7 +18,7 @@ Add it to your `INSTALLED_APPS`:
     )
 
 
-Add django-pwned-passwords's PWNEDPasswordValidator to :code:`AUTH_PASSWORD_VALIDATORS`:
+Add django-pwned-passwords's :code:`PWNEDPasswordValidator` to :code:`AUTH_PASSWORD_VALIDATORS`:
 
 .. code-block:: python
 

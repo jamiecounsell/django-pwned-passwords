@@ -52,21 +52,27 @@ Features
 
 This password validator returns a ValidationError if the PWNED Passwords API
 detects the password in its data set. Note that the API is heavily rate-limited,
-so there is a timeout (`PWNED_VALIDATOR_TIMEOUT`).
+so there is a timeout (:code:`PWNED_VALIDATOR_TIMEOUT`).
 
-If `PWNED_VALIDATOR_FAIL_SAFE` is True, anything besides an API-identified bad password
-will pass, including a timeout. If `PWNED_VALIDATOR_FAIL_SAFE` is False, anything
+If :code:`PWNED_VALIDATOR_FAIL_SAFE` is True, anything besides an API-identified bad password
+will pass, including a timeout. If :code:`PWNED_VALIDATOR_FAIL_SAFE` is False, anything
 besides a good password will fail and raise a ValidationError.
 
 Settings
 --------
 
-* `PWNED_VALIDATOR_TIMEOUT`: The timeout in seconds. The validator will not wait longer than this for a response from the API. (Default: `2`)
-* `PWNED_VALIDATOR_FAIL_SAFE`: If the API fails to get a valid response, should we fail safe and allow the password through? (Default: `True`)
-* `PWNED_VALIDATOR_URL`: The URL for the API in a string format. (Default: `https://haveibeenpwned.com/api/v2/pwnedpassword/{password}`)
-* `PWNED_VALIDATOR_ERROR`: The error message for an invalid password. (Default: `"Your password was detected in a major security breach."`)
-* `PWNED_VALIDATOR_ERROR_FAIL`: The error message when the API fails. Note: this will only display if `PWNED_VALIDATOR_FAIL_SAFE` is `False` (Default: `"We could not validate the safety of this password. This does not mean the password is invalid. Please try again later."`)
-* `PWNED_VALIDATOR_HELP_TEXT`: The help text for this password validator (Default: `"Your password must not have been detected in a major security breach."`)
+* :code:`PWNED_VALIDATOR_TIMEOUT`: The timeout in seconds. The validator will not wait longer than this for a response from the API.
+    (Default: :code:`2`)
+* :code:`PWNED_VALIDATOR_FAIL_SAFE`: If the API fails to get a valid response, should we fail safe and allow the password through?
+    (Default: :code:`True`)
+* :code:`PWNED_VALIDATOR_URL`: The URL for the API in a string format.
+    (Default: :code:`https://haveibeenpwned.com/api/v2/pwnedpassword/{password}`)
+* :code:`PWNED_VALIDATOR_ERROR`: The error message for an invalid password.
+    (Default: :code:`"Your password was detected in a major security breach."`)
+* :code:`PWNED_VALIDATOR_ERROR_FAIL`: The error message when the API fails. Note: this will only display if :code:`PWNED_VALIDATOR_FAIL_SAFE` is `False`.
+    (Default: :code:`"We could not validate the safety of this password. This does not mean the password is invalid. Please try again later."`)
+* :code:`PWNED_VALIDATOR_HELP_TEXT`: The help text for this password validator.
+    (Default: :code:`"Your password must not have been detected in a major security breach."`)
 
 
 Rate Limiting
@@ -74,7 +80,7 @@ Rate Limiting
 
 Requests to the Pwned Passwords API are limited to one per every 1500 milliseconds each from any given IP address
 (an address may request both APIs within this period). Any request that exceeds the limit will receive an
-HTTP 429 "Too many requests" response. If `PWNED_VALIDATOR_FAIL_SAFE` is `True`, rate limited responses will simply
+HTTP 429 "Too many requests" response. If :code:`PWNED_VALIDATOR_FAIL_SAFE` is `True`, rate limited responses will simply
 allow the password through. Otherwise, they will fail and the user will not be able to register until the
 API returns a non-429 status code.
 

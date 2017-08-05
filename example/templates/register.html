@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        .errorlist {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+      <h2>Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+      </form>
+    {% endblock %}
+</body>
+</html>

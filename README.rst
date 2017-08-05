@@ -18,6 +18,12 @@ Documentation
 
 The full documentation is at https://django-pwned-passwords.readthedocs.io.
 
+Requirements
+------------
+
+* Django [1.8, 1.11]
+* Python 2.7, [3.4, 3.6]
+
 Quickstart
 ----------
 

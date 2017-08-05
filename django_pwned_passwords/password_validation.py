@@ -53,9 +53,9 @@ class PWNEDPasswordValidator(object):
         VALID = True
         INVALID = False
 
-        if response.status_code is 200:
+        if response.status_code == 200:
             return INVALID
-        elif response.status_code is 404:
+        elif response.status_code == 404:
             return VALID
 
         if self.fail_safe:
@@ -66,9 +66,6 @@ class PWNEDPasswordValidator(object):
         return self.url.format(
             password = password
         )
-
-    def get_hash(self, password):
-        return hashlib.sha1(password).hexdigest()
 
     def get_help_text(self):
         return _(

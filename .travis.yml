@@ -3,7 +3,10 @@
 language: python
 
 python:
-  - "3.5"
+  - "3.6"
+
+before_install:
+  - if [[ $TOXENV = py35 && -f ~/virtualenv/python3.5/bin/activate ]]; then source ~/virtualenv/python3.5/bin/activate; fi
 
 env:
   - TOX_ENV=py36-django-18

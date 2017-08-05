@@ -1,5 +1,5 @@
 =============================
-django-pwned-passwords
+Django PWNED Passwords
 =============================
 
 .. image:: https://badge.fury.io/py/django-pwned-passwords.svg
@@ -11,7 +11,7 @@ django-pwned-passwords
 .. image:: https://codecov.io/gh/jamiecounsell/django-pwned-passwords/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jamiecounsell/django-pwned-passwords
 
-A Django password validator that checks Troy Hunt's PWNED Passwords API to see if a password has been involved in a major security breach before.
+django-pwned-passwords is a Django password validator that checks Troy Hunt's PWNED Passwords API to see if a password has been involved in a major security breach before.
 
 Documentation
 -------------
@@ -31,22 +31,21 @@ Add it to your `INSTALLED_APPS`:
 
     INSTALLED_APPS = (
         ...
-        'django_pwned_passwords.apps.DjangoPwnedPasswordsConfig',
+        'django_pwned_passwords',
         ...
     )
 
-Add django-pwned-passwords's URL patterns:
+Add django-pwned-passwords's PWNEDPasswordValidator:
 
 .. code-block:: python
 
-    from django_pwned_passwords import urls as django_pwned_passwords_urls
-
-
-    urlpatterns = [
+    AUTH_PASSWORD_VALIDATORS = [
         ...
-        url(r'^', include(django_pwned_passwords_urls)),
-        ...
+        {
+            'NAME': 'django_pwned_passwords.password_validation.PWNEDPasswordValidator'
+        }
     ]
+
 
 Features
 --------

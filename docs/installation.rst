@@ -2,11 +2,30 @@
 Installation
 ============
 
-At the command line::
+Install via pip::
 
-    $ easy_install django-pwned-passwords
-
-Or, if you have virtualenvwrapper installed::
-
-    $ mkvirtualenv django-pwned-passwords
     $ pip install django-pwned-passwords
+
+
+Add it to your `INSTALLED_APPS`:
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        ...
+        'django_pwned_passwords',
+        ...
+    )
+
+
+Add django-pwned-passwords's PWNEDPasswordValidator to :code:`AUTH_PASSWORD_VALIDATORS`:
+
+.. code-block:: python
+
+    AUTH_PASSWORD_VALIDATORS = [
+        ...
+        {
+            'NAME': 'django_pwned_passwords.password_validation.PWNEDPasswordValidator'
+        }
+    ]
+

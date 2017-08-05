@@ -67,19 +67,6 @@ besides a good password will fail and raise a ValidationError.
 Settings
 --------
 
-* :code:`PWNED_VALIDATOR_TIMEOUT`: The timeout in seconds. The validator will not wait longer than this for a response from the API.
-    (Default: :code:`2`)
-* :code:`PWNED_VALIDATOR_FAIL_SAFE`: If the API fails to get a valid response, should we fail safe and allow the password through?
-    (Default: :code:`True`)
-* :code:`PWNED_VALIDATOR_URL`: The URL for the API in a string format.
-    (Default: :code:`https://haveibeenpwned.com/api/v2/pwnedpassword/{password}`)
-* :code:`PWNED_VALIDATOR_ERROR`: The error message for an invalid password.
-    (Default: :code:`"Your password was detected in a major security breach."`)
-* :code:`PWNED_VALIDATOR_ERROR_FAIL`: The error message when the API fails. Note: this will only display if :code:`PWNED_VALIDATOR_FAIL_SAFE` is `False`.
-    (Default: :code:`"We could not validate the safety of this password. This does not mean the password is invalid. Please try again later."`)
-* :code:`PWNED_VALIDATOR_HELP_TEXT`: The help text for this password validator.
-    (Default: :code:`"Your password must not have been detected in a major security breach."`)
-
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | Setting                            | Description                                                                                                         | Default                                                                                                                          |
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+

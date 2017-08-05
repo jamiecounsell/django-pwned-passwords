@@ -25,6 +25,12 @@ INSTALLED_APPS = [
     "django_pwned_passwords",
 ]
 
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django_pwned_passwords.password_validation.PWNEDPasswordValidator'
+    }
+]
+
 SITE_ID = 1
 
 if django.VERSION >= (1, 11):

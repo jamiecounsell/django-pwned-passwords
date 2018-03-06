@@ -22,7 +22,7 @@ class PWNEDPasswordValidator(object):
         self.timeout = getattr(settings, 'PWNED_VALIDATOR_TIMEOUT', 2)
         self.fail_safe = getattr(settings, 'PWNED_VALIDATOR_FAIL_SAFE', True)
         self.url = getattr(settings, 'PWNED_VALIDATOR_URL',
-                             'https://api.pwnedpasswords.com/range/{password}')
+                             'https://api.pwnedpasswords.com/range/{short_hash}')
         self.error_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR',
                              "Your password was detected in a major security breach.")
         self.error_fail_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR_FAIL',
@@ -54,13 +54,15 @@ class PWNEDPasswordValidator(object):
         INVALID = False
 
         try:
-            hash = hashlib.sha1(str.encode(password)).hexdigest()
-            short_hash = hash[0:5].upper()
+            p_hash = hashlib.sha1(str.encode(password)).hexdigest()
+            short_hash = p_hash.upper()[0:5]
             response = requests.get(self.get_url(short_hash), timeout=self.timeout)
-            if hash.upper()[5:] in response.text:
+            if p_hash[5:] in response.text:
                 return INVALID
-            else:
+            elif self.fail_safe:
                 return VALID
+            elif response.status_code in [400, 429, 500]:
+                raise ValidationError(self.error_fail_msg)
         except requests.exceptions.RequestException:
             if not self.fail_safe:
                 raise ValidationError(self.error_fail_msg)
@@ -70,9 +72,9 @@ class PWNEDPasswordValidator(object):
             return VALID
         raise ValidationError(self.error_fail_msg)
 
-    def get_url(self, password):
+    def get_url(self, short_hash):
         return self.url.format(
-            password = password
+            short_hash = short_hash
         )
 
     def get_help_text(self):

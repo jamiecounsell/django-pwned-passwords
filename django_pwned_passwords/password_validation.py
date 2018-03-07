@@ -24,7 +24,7 @@ class PWNEDPasswordValidator(object):
         self.url = getattr(settings, 'PWNED_VALIDATOR_URL',
                              'https://api.pwnedpasswords.com/range/{short_hash}')
         self.error_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR',
-                             "Your password was detected in a major security breach.")
+                             "Your password was determined to have been involved in a major security breach.")
         self.error_fail_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR_FAIL',
                              "We could not validate the safety of this password. This does not mean the password is invalid. Please try again later.")
         self.help_text = getattr(settings, 'PWNED_VALIDATOR_HELP_TEXT',
@@ -54,9 +54,10 @@ class PWNEDPasswordValidator(object):
         INVALID = False
 
         try:
-            p_hash = hashlib.sha1(str.encode(password)).hexdigest()
-            short_hash = p_hash.upper()[0:5]
-            response = requests.get(self.get_url(short_hash), timeout=self.timeout)
+            if isinstance(password, unicode): # Python 3
+                password = password.encode('utf8')
+            p_hash = hashlib.sha1(str.encode(password)).hexdigest().upper()
+            response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
             if p_hash[5:] in response.text:
                 return INVALID
             elif self.fail_safe:

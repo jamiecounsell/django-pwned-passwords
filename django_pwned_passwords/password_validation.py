@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
+import hashlib
 import requests
 
 
@@ -21,9 +22,9 @@ class PWNEDPasswordValidator(object):
         self.timeout = getattr(settings, 'PWNED_VALIDATOR_TIMEOUT', 2)
         self.fail_safe = getattr(settings, 'PWNED_VALIDATOR_FAIL_SAFE', True)
         self.url = getattr(settings, 'PWNED_VALIDATOR_URL',
-                             'https://haveibeenpwned.com/api/v2/pwnedpassword/{password}')
+                             'https://api.pwnedpasswords.com/range/{short_hash}')
         self.error_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR',
-                             "Your password was detected in a major security breach.")
+                             "Your password was determined to have been involved in a major security breach.")
         self.error_fail_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR_FAIL',
                              "We could not validate the safety of this password. This does not mean the password is invalid. Please try again later.")
         self.help_text = getattr(settings, 'PWNED_VALIDATOR_HELP_TEXT',
@@ -53,24 +54,26 @@ class PWNEDPasswordValidator(object):
         INVALID = False
 
         try:
-            response = requests.get(self.get_url(password), timeout = self.timeout)
+            p_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+            response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
+            if p_hash[5:] in response.text:
+                return INVALID
+            elif self.fail_safe:
+                return VALID
+            elif response.status_code in [400, 429, 500]:
+                raise ValidationError(self.error_fail_msg)
         except requests.exceptions.RequestException:
             if not self.fail_safe:
                 raise ValidationError(self.error_fail_msg)
-            return VALID
-
-        if response.status_code == 200:
-            return INVALID
-        elif response.status_code == 404:
             return VALID
 
         if self.fail_safe:
             return VALID
         raise ValidationError(self.error_fail_msg)
 
-    def get_url(self, password):
+    def get_url(self, short_hash):
         return self.url.format(
-            password = password
+            short_hash = short_hash
         )
 
     def get_help_text(self):

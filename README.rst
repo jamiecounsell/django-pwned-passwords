@@ -23,7 +23,7 @@ The full documentation is at https://django-pwned-passwords.readthedocs.io.
 Requirements
 ------------
 
-* Django [1.8, 1.11]
+* Django [1.8, 1.11], 2.0
 * Python 2.7, [3.4, 3.6]
 
 Quickstart
@@ -76,9 +76,9 @@ Settings
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | :code:`PWNED_VALIDATOR_FAIL_SAFE`  | If the API fails to get a valid response, should we fail safe and allow the password through?                       | :code:`True`                                                                                                                     |
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`PWNED_VALIDATOR_URL`        | The URL for the API in a string format.                                                                             | :code:`https://haveibeenpwned.com/api/v2/pwnedpassword/{password}`                                                               |
+| :code:`PWNED_VALIDATOR_URL`        | The URL for the API in a string format.                                                                             | :code:`https://haveibeenpwned.com/api/v2/pwnedpassword/{short_hash}`                                                               |
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| :code:`PWNED_VALIDATOR_ERROR`      | The error message for an invalid password.                                                                          | :code:`"Your password was detected in a major security breach."`                                                                 |
+| :code:`PWNED_VALIDATOR_ERROR`      | The error message for an invalid password.                                                                          | :code:`"Your password was determined to have been involved in a major security breach."`                                                                 |
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | :code:`PWNED_VALIDATOR_ERROR_FAIL` | The error message when the API fails. Note: this will only display if :code:`PWNED_VALIDATOR_FAIL_SAFE` is `False`. | :code:`"We could not validate the safety of this password. This does not mean the password is invalid. Please try again later."` |
 +------------------------------------+---------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+

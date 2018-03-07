@@ -6,7 +6,9 @@ python:
   - "3.6"
 
 before_install:
-  - if [[ $TOXENV = py35 && -f ~/virtualenv/python3.5/bin/activate ]]; then source ~/virtualenv/python3.5/bin/activate; fi
+  # work around https://github.com/travis-ci/travis-ci/issues/8363
+  - pyenv install 3.5.4
+  - pyenv global system 3.5.4
 
 env:
   - TOX_ENV=py36-django-18
@@ -25,6 +27,9 @@ env:
   - TOX_ENV=py35-django-111
   - TOX_ENV=py34-django-111
   - TOX_ENV=py27-django-111
+  - TOX_ENV=py36-django-20
+  - TOX_ENV=py35-django-20
+  - TOX_ENV=py34-django-20
 
 matrix:
   fast_finish: true

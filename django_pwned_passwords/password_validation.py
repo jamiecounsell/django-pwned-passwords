@@ -54,9 +54,7 @@ class PWNEDPasswordValidator(object):
         INVALID = False
 
         try:
-            if isinstance(password, unicode): # Python 3
-                password = password.encode('utf8')
-            p_hash = hashlib.sha1(str.encode(password)).hexdigest().upper()
+            p_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
             response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
             if p_hash[5:] in response.text:
                 return INVALID

@@ -20,7 +20,7 @@ import hashlib
 class TestPasswordValidation(TestCase):
 
     def get_hash(self, password):
-        return hashlib.sha1(str.encode(password)).hexdigest()
+        return hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
 
     @requests_mock.mock()
     def test_pwned_password_fails(self, m):
@@ -132,6 +132,8 @@ class TestPasswordValidation(TestCase):
         except ValidationError as e:
             self.assertEqual(e.message, "failure")
             return
+        except Exception as e:
+            print(e)
         self.fail("No exception was thrown")
 
     @requests_mock.mock()

@@ -13,7 +13,7 @@ Django PWNED Passwords
 
 django-pwned-passwords is a Django password validator that checks Troy Hunt's PWNED Passwords API to see if a password has been involved in a major security breach before.
 
-**Note: This app currently sends user passwords to a third party. There are obvious security risks associated with this practice.**
+**Note: This app currently sends a portion of a user's hashed password to a third party. Before using this application, you should understand how that impacts you.**
 
 Documentation
 -------------

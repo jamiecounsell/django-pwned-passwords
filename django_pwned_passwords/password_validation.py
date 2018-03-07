@@ -36,11 +36,7 @@ class PWNEDPasswordValidator(object):
 
     def check_valid(self, password):
         """
-        Tests that a password is valid using the API. Note: The API returns
-        the following status codes:
-
-        200 - Password was found in data set. Bad password!
-        404 - Password was not found in data set.
+        Tests that a password is valid using the API. Uses k-anonymity model in v2 API.
 
         If self.fail_safe is True, anything besides a bad password will
         return True. If self.fail_safe is False, anything besides a good password

@@ -88,11 +88,7 @@ Settings
 Rate Limiting
 -------------
 
-Requests to the Pwned Passwords API are limited to one per every 1500 milliseconds each from any given IP address
-(an address may request both APIs within this period). Any request that exceeds the limit will receive an
-HTTP 429 "Too many requests" response. If :code:`PWNED_VALIDATOR_FAIL_SAFE` is `True`, rate limited responses will simply
-allow the password through. Otherwise, they will fail and the user will not be able to register until the
-API returns a non-429 status code.
+Historically, requests to the API were rate limited. However, with the new k-anonymity model-based API, there are no such rate limits.
 
 Running Tests
 -------------

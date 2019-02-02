@@ -144,6 +144,19 @@ class TestPasswordValidation(TestCase):
 
     @requests_mock.mock()
     @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
+    def test_not_fail_safe_redirect_fails(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "supersecret"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(short_hash=short_hash), status_code=301)
+
+        with self.assertRaises(ValidationError):
+            validator.validate(password)
+
+    @requests_mock.mock()
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
     def test_not_fail_safe_unpwned_password_succeeds(self, m):
         validator = PWNEDPasswordValidator()
         password = "supersecret"

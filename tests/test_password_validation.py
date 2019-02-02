@@ -116,6 +116,49 @@ class TestPasswordValidation(TestCase):
             validator.validate(password)
 
     @requests_mock.mock()
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
+    def test_not_fail_safe_pwned_password_fails(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "common"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(short_hash=short_hash), status_code=200,
+            text=p_hash[5:] + ":1")
+
+        with self.assertRaises(ValidationError):
+            validator.validate(password)
+
+    @requests_mock.mock()
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
+    def test_not_fail_safe_zero_results_fails(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "supersecret"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(short_hash=short_hash), status_code=404)
+
+        with self.assertRaises(ValidationError):
+            validator.validate(password)
+
+    @requests_mock.mock()
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
+    def test_not_fail_safe_unpwned_password_succeeds(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "supersecret"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(short_hash=short_hash), status_code=200,
+            text=self.get_hash("notsecret")[5:] + ":1")
+
+        try:
+            validator.validate(password)
+        except ValidationError:
+            self.fail("ValidationError was raised for valid password")
+
+    @requests_mock.mock()
     @override_settings(PWNED_VALIDATOR_ERROR = "failure")
     def test_custom_error_message(self, m):
         validator = PWNEDPasswordValidator()

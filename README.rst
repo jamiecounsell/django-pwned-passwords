@@ -23,8 +23,8 @@ The full documentation is at https://django-pwned-passwords.readthedocs.io.
 Requirements
 ------------
 
-* Django [1.8, 1.11], 2.0
-* Python 2.7, [3.4, 3.6]
+* Django [1.9, 2.1]
+* Python 2.7, [3.4, 3.6, 3.7]
 
 Quickstart
 ----------

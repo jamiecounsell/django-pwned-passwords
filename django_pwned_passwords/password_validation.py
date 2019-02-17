@@ -54,7 +54,7 @@ class PWNEDPasswordValidator(object):
             p_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
             response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
 
-            if self.get_breaches(p_hash, response.text) >= self.min_breaches:
+            if self.get_breach_count(p_hash, response.text) >= self.min_breaches:
                 return INVALID
             elif self.fail_safe:
                 return VALID
@@ -82,8 +82,9 @@ class PWNEDPasswordValidator(object):
         )
 
     @staticmethod
-    def get_breaches(p_hash, response_text):
-        if p_hash[5:] not in response_text:
-            return 0
-
-        return int([line for line in response_text.splitlines() if p_hash[5:] in line][0].split(':')[1])
+    def get_breach_count(p_hash, response_text):
+        for line in response_text.splitlines():
+            hash, count = line.split(":")
+            if p_hash[5:] == hash:
+                return int(count)
+        return 0

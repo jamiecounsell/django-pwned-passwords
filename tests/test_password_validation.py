@@ -63,8 +63,10 @@ class TestPasswordValidation(TestCase):
             short_hash = short_hash
         ), status_code = 200, text = p_hash[5:] + ":9")
 
-        with self.assertRaises(ValidationError):
+        try:
             validator.validate(password)
+        except ValidationError:
+            self.fail("ValidationError was raised for valid password")
 
     @requests_mock.mock()
     def test_zero_results_succeeds(self, m):

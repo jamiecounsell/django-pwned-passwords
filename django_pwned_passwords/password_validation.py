@@ -21,6 +21,7 @@ class PWNEDPasswordValidator(object):
         self.min_length = min_length
         self.timeout = getattr(settings, 'PWNED_VALIDATOR_TIMEOUT', 2)
         self.fail_safe = getattr(settings, 'PWNED_VALIDATOR_FAIL_SAFE', True)
+        self.min_breaches = getattr(settings, 'PWNED_VALIDATOR_MINIMUM_BREACHES', 1)
         self.url = getattr(settings, 'PWNED_VALIDATOR_URL',
                              'https://api.pwnedpasswords.com/range/{short_hash}')
         self.error_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR',
@@ -52,7 +53,8 @@ class PWNEDPasswordValidator(object):
         try:
             p_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
             response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
-            if p_hash[5:] in response.text:
+
+            if self.get_breaches(p_hash, response.text) >= self.min_breaches:
                 return INVALID
             elif self.fail_safe:
                 return VALID
@@ -60,7 +62,7 @@ class PWNEDPasswordValidator(object):
                 raise ValidationError(self.error_fail_msg)
             elif response.status_code in [200]:
                 return VALID
-        except requests.exceptions.RequestException:
+        except (requests.exceptions.RequestException, IndexError):
             if not self.fail_safe:
                 raise ValidationError(self.error_fail_msg)
             return VALID
@@ -78,3 +80,10 @@ class PWNEDPasswordValidator(object):
         return _(
             self.help_text
         )
+
+    @staticmethod
+    def get_breaches(p_hash, response_text):
+        if p_hash[5:] not in response_text:
+            return 0
+
+        return int([line for line in response_text.splitlines() if p_hash[5:] in line][0].split(':')[1])

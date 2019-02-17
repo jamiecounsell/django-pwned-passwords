@@ -36,8 +36,9 @@ class TestPasswordValidation(TestCase):
         with self.assertRaises(ValidationError):
             validator.validate(password)
 
+    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES = 2)
     @requests_mock.mock()
-    def test_pwned_password_fails_multiline(self, m):
+    def test_above_limit_password_fails(self, m):
         validator = PWNEDPasswordValidator()
         password = "common"
         p_hash = self.get_hash(password)
@@ -45,7 +46,22 @@ class TestPasswordValidation(TestCase):
 
         m.get(validator.url.format(
             short_hash = short_hash
-        ), status_code = 200, text = p_hash[5:] + ":6\n07A60BA364011AACB2F0470CC983FCA6AF5:1")
+        ), status_code = 200, text = p_hash[5:] + ":3")
+
+        with self.assertRaises(ValidationError):
+            validator.validate(password)
+
+    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES = 10)
+    @requests_mock.mock()
+    def test_below_limit_password_passes(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "common"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(
+            short_hash = short_hash
+        ), status_code = 200, text = p_hash[5:] + ":9")
 
         with self.assertRaises(ValidationError):
             validator.validate(password)

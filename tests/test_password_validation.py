@@ -274,3 +274,18 @@ class TestPasswordValidation(TestCase):
     def test_custom_help_text(self):
         validator = PWNEDPasswordValidator()
         self.assertEqual(validator.get_help_text(), "help!")
+
+    @requests_mock.mock()
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
+    def test_pwned_password_bad_response(self, m):
+        validator = PWNEDPasswordValidator()
+        password = "common"
+        p_hash = self.get_hash(password)
+        short_hash = p_hash.upper()[:5]
+
+        m.get(validator.url.format(
+            short_hash = short_hash
+        ), status_code = 200, text ="random test with no colons")
+
+        with self.assertRaises(ValidationError):
+            validator.validate(password)

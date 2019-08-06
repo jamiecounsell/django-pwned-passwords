@@ -62,7 +62,7 @@ class PWNEDPasswordValidator(object):
                 raise ValidationError(self.error_fail_msg)
             elif response.status_code in [200]:
                 return VALID
-        except (requests.exceptions.RequestException, IndexError):
+        except (requests.exceptions.RequestException, IndexError, ValueError):
             if not self.fail_safe:
                 raise ValidationError(self.error_fail_msg)
             return VALID

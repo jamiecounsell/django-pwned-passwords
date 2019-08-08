@@ -24,7 +24,7 @@ Requirements
 ------------
 
 * Django [1.9, 2.1]
-* Python 2.7, [3.4, 3.6, 3.7]
+* Python 2.7, [3.5, 3.6, 3.7]
 
 Quickstart
 ----------

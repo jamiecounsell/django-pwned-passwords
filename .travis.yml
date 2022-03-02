@@ -11,19 +11,17 @@ before_install:
   - pyenv global system 3.5.4
 
 env:
-  - TOX_ENV=py36-django-19
-  - TOX_ENV=py35-django-19
-  - TOX_ENV=py27-django-19
-  - TOX_ENV=py36-django-110
-  - TOX_ENV=py35-django-110
-  - TOX_ENV=py27-django-110
-  - TOX_ENV=py36-django-111
-  - TOX_ENV=py35-django-111
-  - TOX_ENV=py27-django-111
-  - TOX_ENV=py36-django-20
-  - TOX_ENV=py35-django-20
-  - TOX_ENV=py36-django-21
-  - TOX_ENV=py35-django-21
+  - TOX_ENV=py35-django-22
+  - TOX_ENV=py36-django-22
+  - TOX_ENV=py37-django-22
+  - TOX_ENV=py36-django-32
+  - TOX_ENV=py37-django-32
+  - TOX_ENV=py38-django-32
+  - TOX_ENV=py39-django-32
+  - TOX_ENV=py310-django-32
+  - TOX_ENV=py38-django-40
+  - TOX_ENV=py39-django-40
+  - TOX_ENV=py310-django-40
 
 matrix:
   fast_finish: true

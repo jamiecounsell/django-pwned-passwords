@@ -24,9 +24,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django_pwned_passwords.password_validation.PWNEDPasswordValidator'
-    }
+    {"NAME": "django_pwned_passwords.password_validation.PWNEDPasswordValidator"}
 ]
 
 SITE_ID = 1

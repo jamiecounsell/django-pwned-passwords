@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 import hashlib
 import requests
@@ -19,17 +19,30 @@ class PWNEDPasswordValidator(object):
 
     def __init__(self, min_length=8):
         self.min_length = min_length
-        self.timeout = getattr(settings, 'PWNED_VALIDATOR_TIMEOUT', 2)
-        self.fail_safe = getattr(settings, 'PWNED_VALIDATOR_FAIL_SAFE', True)
-        self.min_breaches = getattr(settings, 'PWNED_VALIDATOR_MINIMUM_BREACHES', 1)
-        self.url = getattr(settings, 'PWNED_VALIDATOR_URL',
-                             'https://api.pwnedpasswords.com/range/{short_hash}')
-        self.error_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR',
-                             "Your password was determined to have been involved in a major security breach.")
-        self.error_fail_msg = getattr(settings, 'PWNED_VALIDATOR_ERROR_FAIL',
-                             "We could not validate the safety of this password. This does not mean the password is invalid. Please try again later.")
-        self.help_text = getattr(settings, 'PWNED_VALIDATOR_HELP_TEXT',
-                             "Your password must not have been detected in a major security breach.")
+        self.timeout = getattr(settings, "PWNED_VALIDATOR_TIMEOUT", 2)
+        self.fail_safe = getattr(settings, "PWNED_VALIDATOR_FAIL_SAFE", True)
+        self.min_breaches = getattr(settings, "PWNED_VALIDATOR_MINIMUM_BREACHES", 1)
+        self.url = getattr(
+            settings,
+            "PWNED_VALIDATOR_URL",
+            "https://api.pwnedpasswords.com/range/{short_hash}",
+        )
+        self.error_msg = getattr(
+            settings,
+            "PWNED_VALIDATOR_ERROR",
+            "Your password was determined to have been involved in a major security breach.",
+        )
+        self.error_fail_msg = getattr(
+            settings,
+            "PWNED_VALIDATOR_ERROR_FAIL",
+            "We could not validate the safety of this password. "
+            "This does not mean the password is invalid. Please try again later.",
+        )
+        self.help_text = getattr(
+            settings,
+            "PWNED_VALIDATOR_HELP_TEXT",
+            "Your password must not have been detected in a major security breach.",
+        )
 
     def validate(self, password, user=None):
         if not self.check_valid(password):
@@ -51,7 +64,7 @@ class PWNEDPasswordValidator(object):
         INVALID = False
 
         try:
-            p_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+            p_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
             response = requests.get(self.get_url(p_hash[0:5]), timeout=self.timeout)
 
             if self.get_breach_count(p_hash, response.text) >= self.min_breaches:
@@ -72,14 +85,10 @@ class PWNEDPasswordValidator(object):
         raise ValidationError(self.error_fail_msg)
 
     def get_url(self, short_hash):
-        return self.url.format(
-            short_hash = short_hash
-        )
+        return self.url.format(short_hash=short_hash)
 
     def get_help_text(self):
-        return _(
-            self.help_text
-        )
+        return _(self.help_text)
 
     @staticmethod
     def get_breach_count(p_hash, response_text):

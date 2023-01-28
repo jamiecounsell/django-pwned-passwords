@@ -1,6 +1,4 @@
 # -*- coding: utf-8
-from __future__ import unicode_literals, absolute_import
-
 import django
 
 DEBUG = True
@@ -26,9 +24,7 @@ INSTALLED_APPS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django_pwned_passwords.password_validation.PWNEDPasswordValidator'
-    }
+    {"NAME": "django_pwned_passwords.password_validation.PWNEDPasswordValidator"}
 ]
 
 SITE_ID = 1

@@ -18,9 +18,8 @@ import hashlib
 
 
 class TestPasswordValidation(TestCase):
-
     def get_hash(self, password):
-        return hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+        return hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
 
     @requests_mock.mock()
     def test_pwned_password_fails(self, m):
@@ -29,14 +28,16 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text = p_hash[5:] + ":1")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=p_hash[5:] + ":1",
+        )
 
         with self.assertRaises(ValidationError):
             validator.validate(password)
 
-    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES = 2)
+    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES=2)
     @requests_mock.mock()
     def test_above_limit_password_fails(self, m):
         validator = PWNEDPasswordValidator()
@@ -44,14 +45,16 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text = p_hash[5:] + ":3")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=p_hash[5:] + ":3",
+        )
 
         with self.assertRaises(ValidationError):
             validator.validate(password)
 
-    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES = 10)
+    @override_settings(PWNED_VALIDATOR_MINIMUM_BREACHES=10)
     @requests_mock.mock()
     def test_below_limit_password_passes(self, m):
         validator = PWNEDPasswordValidator()
@@ -59,9 +62,11 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text = p_hash[5:] + ":9")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=p_hash[5:] + ":9",
+        )
 
         try:
             validator.validate(password)
@@ -75,9 +80,7 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 404)
+        m.get(validator.url.format(short_hash=short_hash), status_code=404)
 
         try:
             validator.validate(password)
@@ -91,9 +94,11 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text = "07A60BA364011AACB2F0470CC983FCA6AF5:1")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text="07A60BA364011AACB2F0470CC983FCA6AF5:1",
+        )
 
         try:
             validator.validate(password)
@@ -107,9 +112,7 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 429)
+        m.get(validator.url.format(short_hash=short_hash), status_code=429)
 
         try:
             validator.validate(password)
@@ -123,9 +126,10 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), exc = requests.exceptions.RequestException)
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            exc=requests.exceptions.RequestException,
+        )
 
         try:
             validator.validate(password)
@@ -133,16 +137,14 @@ class TestPasswordValidation(TestCase):
             self.fail("ValidationError was raised for valid password")
 
     @requests_mock.mock()
-    @override_settings(PWNED_VALIDATOR_FAIL_SAFE = False)
+    @override_settings(PWNED_VALIDATOR_FAIL_SAFE=False)
     def test_not_fail_safe_fails_on_rate_limit(self, m):
         validator = PWNEDPasswordValidator()
         password = "doesn'tmatter"
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 429)
+        m.get(validator.url.format(short_hash=short_hash), status_code=429)
 
         with self.assertRaises(ValidationError):
             validator.validate(password)
@@ -155,8 +157,11 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(short_hash=short_hash), status_code=200,
-            text=p_hash[5:] + ":1")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=p_hash[5:] + ":1",
+        )
 
         with self.assertRaises(ValidationError):
             validator.validate(password)
@@ -195,8 +200,11 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(short_hash=short_hash), status_code=200,
-            text=self.get_hash("notsecret")[5:] + ":1")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=self.get_hash("notsecret")[5:] + ":1",
+        )
 
         try:
             validator.validate(password)
@@ -204,16 +212,18 @@ class TestPasswordValidation(TestCase):
             self.fail("ValidationError was raised for valid password")
 
     @requests_mock.mock()
-    @override_settings(PWNED_VALIDATOR_ERROR = "failure")
+    @override_settings(PWNED_VALIDATOR_ERROR="failure")
     def test_custom_error_message(self, m):
         validator = PWNEDPasswordValidator()
         password = "doesn'tmatter"
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text = p_hash[5:] + ":1")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text=p_hash[5:] + ":1",
+        )
 
         try:
             validator.validate(password)
@@ -226,17 +236,15 @@ class TestPasswordValidation(TestCase):
 
     @requests_mock.mock()
     @override_settings(
-        PWNED_VALIDATOR_ERROR_FAIL = "failure",
-        PWNED_VALIDATOR_FAIL_SAFE = False)
+        PWNED_VALIDATOR_ERROR_FAIL="failure", PWNED_VALIDATOR_FAIL_SAFE=False
+    )
     def test_custom_fail_message(self, m):
         validator = PWNEDPasswordValidator()
         password = "doesn'tmatter"
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 500)
+        m.get(validator.url.format(short_hash=short_hash), status_code=500)
 
         try:
             validator.validate(password)
@@ -247,17 +255,18 @@ class TestPasswordValidation(TestCase):
 
     @requests_mock.mock()
     @override_settings(
-        PWNED_VALIDATOR_ERROR_FAIL = "failure",
-        PWNED_VALIDATOR_FAIL_SAFE = False)
+        PWNED_VALIDATOR_ERROR_FAIL="failure", PWNED_VALIDATOR_FAIL_SAFE=False
+    )
     def test_custom_fail_message_timeout(self, m):
         validator = PWNEDPasswordValidator()
         password = "doesn'tmatter"
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), exc = requests.exceptions.ConnectTimeout)
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            exc=requests.exceptions.ConnectTimeout,
+        )
 
         try:
             validator.validate(password)
@@ -283,9 +292,11 @@ class TestPasswordValidation(TestCase):
         p_hash = self.get_hash(password)
         short_hash = p_hash.upper()[:5]
 
-        m.get(validator.url.format(
-            short_hash = short_hash
-        ), status_code = 200, text ="random test with no colons")
+        m.get(
+            validator.url.format(short_hash=short_hash),
+            status_code=200,
+            text="random test with no colons",
+        )
 
         with self.assertRaises(ValidationError):
             validator.validate(password)

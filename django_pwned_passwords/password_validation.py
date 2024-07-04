@@ -1,9 +1,9 @@
-from django.core.exceptions import ValidationError
-from django.conf import settings
-from django.utils.translation import gettext as _
-
 import hashlib
+
 import requests
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 
 class PWNEDPasswordValidator(object):
@@ -30,7 +30,7 @@ class PWNEDPasswordValidator(object):
         self.error_msg = getattr(
             settings,
             "PWNED_VALIDATOR_ERROR",
-            "Your password was determined to have been involved in a major security breach.",
+            "Your password was determined to have been involved in a major security breach.",  # noqa: E501
         )
         self.error_fail_msg = getattr(
             settings,

@@ -8,13 +8,14 @@ test_django-pwned-passwords
 Tests for `django-pwned-passwords` password_validation module.
 """
 
-from django.test import TestCase, override_settings
-from django.core.exceptions import ValidationError
-from django_pwned_passwords.password_validation import PWNEDPasswordValidator
-
-import requests_mock
-import requests
 import hashlib
+
+import requests
+import requests_mock
+from django.core.exceptions import ValidationError
+from django.test import TestCase, override_settings
+
+from django_pwned_passwords.password_validation import PWNEDPasswordValidator
 
 
 class TestPasswordValidation(TestCase):

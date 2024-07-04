@@ -1,7 +1,7 @@
-from django.conf.urls import url, include
-from django.views.generic.edit import CreateView
+from django.conf.urls import include, url
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import RedirectView
+from django.views.generic.edit import CreateView
 
 urlpatterns = [
     url("^$", RedirectView.as_view(pattern_name="register")),

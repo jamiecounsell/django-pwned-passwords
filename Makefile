@@ -1,4 +1,4 @@
-.PHONY: clean-pyc clean-build docs help
+.PHONY: clean clean-pyc clean-build lint test test-all coverage docs release dist help
 .DEFAULT_GOAL := help
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -27,20 +27,20 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 
-lint: ## check style with flake8
-	flake8 django_pwned_passwords tests
+lint: ## check style with black, isort and ruff
+	tox -e lint
 
 test: ## run tests quickly with the default Python
-	python runtests.py tests
+	pytest
 
-test-all: ## run tests on every Python version with tox
+test-all: ## run tests on every Python/Django combination with tox
 	tox
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source django_pwned_passwords runtests.py tests
+	coverage run --source django_pwned_passwords -m pytest
 	coverage report -m
 	coverage html
-	open htmlcov/index.html
+	$(BROWSER) htmlcov/index.html
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/django-pwned-passwords.rst
@@ -50,10 +50,9 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-release: clean ## package and upload a release
-	python setup.py sdist upload
-	python setup.py bdist_wheel upload
+release: dist ## package and upload a release
+	twine upload dist/*
 
-sdist: clean ## package
-	python setup.py sdist
+dist: clean ## build source and wheel packages
+	python -m build
 	ls -l dist

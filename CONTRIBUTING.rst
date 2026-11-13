@@ -66,7 +66,7 @@ Ready to contribute? Here's how to set up `django-pwned-passwords` for local dev
 
     $ mkvirtualenv django-pwned-passwords
     $ cd django-pwned-passwords/
-    $ python setup.py develop
+    $ pip install -e ".[dev]"
 
 4. Create a branch for local development::
 
@@ -77,11 +77,9 @@ Ready to contribute? Here's how to set up `django-pwned-passwords` for local dev
 5. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
 
-        $ flake8 django_pwned_passwords tests
-        $ python setup.py test
+        $ tox -e lint
+        $ pytest
         $ tox
-
-   To get flake8 and tox, just pip install them into your virtualenv.
 
 6. Commit your changes and push your branch to GitHub::
 

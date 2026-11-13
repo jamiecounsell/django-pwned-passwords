@@ -2,14 +2,14 @@
 Django PWNED Passwords
 ======================
 
-.. image:: https://badge.fury.io/py/django-pwned-passwords.svg
-    :target: https://badge.fury.io/py/django-pwned-passwords
+.. image:: https://img.shields.io/pypi/v/django-pwned-passwords-ng.svg
+    :target: https://pypi.org/project/django-pwned-passwords-ng/
 
-.. image:: https://travis-ci.org/jamiecounsell/django-pwned-passwords.svg?branch=master
-    :target: https://travis-ci.org/jamiecounsell/django-pwned-passwords
+.. image:: https://github.com/slinkymanbyday/django-pwned-passwords/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/slinkymanbyday/django-pwned-passwords/actions/workflows/test.yml
 
-.. image:: https://codecov.io/gh/jamiecounsell/django-pwned-passwords/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/jamiecounsell/django-pwned-passwords
+``django-pwned-passwords-ng`` is a maintained fork of `django-pwned-passwords <https://github.com/jamiecounsell/django-pwned-passwords>`_.
+It is a drop-in replacement: the Python package, app name and validator path are unchanged.
 
 django-pwned-passwords is a Django password validator that checks Troy Hunt's PWNED Passwords API to see if a password has been involved in a major security breach before.
 
@@ -18,20 +18,28 @@ django-pwned-passwords is a Django password validator that checks Troy Hunt's PW
 Documentation
 -------------
 
-The full documentation is at https://django-pwned-passwords.readthedocs.io.
+The full documentation is in the `docs <https://github.com/slinkymanbyday/django-pwned-passwords/tree/master/docs>`_ directory.
 
 Requirements
 ------------
 
-* Django [1.9, 2.1]
-* Python 2.7, [3.5, 3.6, 3.7]
+* Django 5.2, 6.0, 6.1
+* Python 3.11, 3.12, 3.13, 3.14, 3.15
 
 Quickstart
 ----------
 
-Install django-pwned-passwords::
+Install django-pwned-passwords-ng::
 
-    pip install django-pwned-passwords
+    pip install django-pwned-passwords-ng
+
+.. note::
+
+    ``django-pwned-passwords-ng`` installs the same ``django_pwned_passwords``
+    Python package as the original ``django-pwned-passwords``. Uninstall the
+    original before installing this one, as having both installed will conflict::
+
+        pip uninstall django-pwned-passwords
 
 Add it to your `INSTALLED_APPS`:
 

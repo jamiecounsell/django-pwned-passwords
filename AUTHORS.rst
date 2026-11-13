@@ -2,10 +2,15 @@
 Credits
 =======
 
-Development Lead
-----------------
+Original Author
+---------------
 
 * Jamie Counsell <jamiecounsell@me.com>
+
+Fork Maintainer (django-pwned-passwords-ng)
+-------------------------------------------
+
+* Sean Meyer
 
 Contributors
 ------------

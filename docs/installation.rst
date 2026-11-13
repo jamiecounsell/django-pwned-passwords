@@ -4,7 +4,15 @@ Installation
 
 Install via pip::
 
-    $ pip install django-pwned-passwords
+    $ pip install django-pwned-passwords-ng
+
+.. note::
+
+    ``django-pwned-passwords-ng`` installs the same ``django_pwned_passwords``
+    Python package as the original ``django-pwned-passwords``. Uninstall the
+    original before installing this one, as having both installed will conflict::
+
+        pip uninstall django-pwned-passwords
 
 
 Add it to your :code:`INSTALLED_APPS`:

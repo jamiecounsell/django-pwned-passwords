@@ -1,4 +1,4 @@
-.PHONY: clean clean-pyc clean-build lint test test-all coverage docs release dist help
+.PHONY: clean clean-pyc clean-build lint test test-all coverage docs dist help
 .DEFAULT_GOAL := help
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -50,9 +50,7 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-release: dist ## package and upload a release
-	twine upload dist/*
-
-dist: clean ## build source and wheel packages
+dist: clean ## build and check source and wheel packages
 	python -m build
+	twine check --strict dist/*
 	ls -l dist

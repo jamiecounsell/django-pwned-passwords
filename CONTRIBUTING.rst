@@ -74,10 +74,11 @@ Ready to contribute? Here's how to set up `django-pwned-passwords` for local dev
 
    Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass flake8 and the
+5. When you're done making changes, check that your changes pass ruff and the
    tests, including testing other Python versions with tox::
 
-        $ tox -e lint
+        $ make format
+        $ make lint
         $ pytest
         $ tox
 

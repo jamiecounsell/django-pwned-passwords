@@ -53,6 +53,7 @@ dev = [
     "django-pwned-passwords-ng[test]",
     "build",
     "bump-my-version",
+    "ruff",
     "tox",
     "twine",
 ]
@@ -66,10 +67,12 @@ dev = [
 [tool.setuptools.dynamic]
 version = { attr = "django_pwned_passwords.__version__" }
 
-[tool.isort]
-profile = "black"
-
 [tool.ruff]
+# Files ruff formats and lints. Commands run without paths (`ruff format`,
+# `ruff check`) and pick their files from here.
+include = [
+    "django_pwned_passwords/**/*.py",
+]
 extend-exclude = [
     "__pycache__",
 ]

@@ -1,4 +1,4 @@
-.PHONY: clean clean-pyc clean-build lint test test-all coverage docs dist help
+.PHONY: clean clean-pyc clean-build lint format test test-all coverage docs dist help
 .DEFAULT_GOAL := help
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -27,8 +27,13 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 
-lint: ## check style with black, isort and ruff
-	tox -e lint
+lint: ## check formatting and lint with ruff
+	ruff format --check --diff
+	ruff check
+
+format: ## format code and apply safe lint fixes with ruff
+	ruff format
+	ruff check --fix
 
 test: ## run tests quickly with the default Python
 	pytest

@@ -47,7 +47,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "django-pwned-passwords"
+project = "django-pwned-passwords-ng"
 copyright = "2017, Jamie Counsell"
 
 # The version info for the project you're documenting, acts as replacement for

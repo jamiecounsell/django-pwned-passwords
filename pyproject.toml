@@ -1,30 +1,35 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools>=61",
+    "setuptools>=77",
 ]
 
 [project]
-name = "django-pwned-passwords"
+name = "django-pwned-passwords-ng"
 description = "A Django password validator that checks Troy Hunt's PWNED Passwords API to see if a password has been involved in a major security breach before."
-readme = "README.md"
-license = { text = "MIT" }
-authors = [{ name = "Sean Meyer" }]
-requires-python = ">=3.8"
+readme = "README.rst"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Jamie Counsell" },
+    { name = "Sean Meyer" },
+]
+maintainers = [{ name = "Sean Meyer" }]
+requires-python = ">=3.11"
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
-    "Framework :: Django :: 4.2",
-    "Framework :: Django :: 5.0",
-    "Framework :: Django :: 5.1",
-    "License :: OSI Approved :: MIT License",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -33,14 +38,24 @@ dynamic = [
     "version",
 ]
 dependencies = [
-    "django>=4.2"
+    "django>=5.2",
+    "requests",
 ]
 
 [project.optional-dependencies]
 test = [
+    "coverage",
     "pytest",
     "pytest-django",
-
+    "requests-mock",
+]
+dev = [
+    "django-pwned-passwords-ng[test]",
+    "build",
+    "bump-my-version",
+    "ruff",
+    "tox",
+    "twine",
 ]
 
 [project.urls]
@@ -52,10 +67,12 @@ test = [
 [tool.setuptools.dynamic]
 version = { attr = "django_pwned_passwords.__version__" }
 
-[tool.isort]
-profile = "black"
-
 [tool.ruff]
+# Files ruff formats and lints. Commands run without paths (`ruff format`,
+# `ruff check`) and pick their files from here.
+include = [
+    "django_pwned_passwords/**/*.py",
+]
 extend-exclude = [
     "__pycache__",
 ]
@@ -78,9 +95,11 @@ select = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
+django_find_project = false
+pythonpath = ["."]
 
 [tool.bumpversion]
-current_version = "5.2.0"
+current_version = "6.0.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"

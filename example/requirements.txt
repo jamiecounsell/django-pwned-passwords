@@ -1,5 +1,4 @@
-# Your app requirements.
--r ../requirements_test.txt
-
-# Your app in editable mode.
--e ../
+# Install the app in editable mode, which also pulls in its dependencies
+# (Django and requests) from pyproject.toml.
+# Run `pip install -r requirements.txt` from inside the example directory.
+-e ..
